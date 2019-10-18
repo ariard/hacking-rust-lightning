@@ -11,8 +11,9 @@ Requirements
 ============
 
 * synced testnet bitcoind
-* rust toolchain >= 1.22
+* rust toolchain 1.35
 * some fortitude
+* rust-lightning repo set at commit ab8f5a8 as in Cargo.toml
 
 
 Anatomy of a Lightning node
