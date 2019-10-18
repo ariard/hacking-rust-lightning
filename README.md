@@ -8,7 +8,7 @@ network event and CLI inputs. So you just have to write the code, debug and play
 have to write the code, debug and play with it.
 
 Requirements
-------------
+============
 
 * synced testnet bitcoind
 * rust toolchain >= 1.22
@@ -16,7 +16,7 @@ Requirements
 
 
 Anatomy of a Lightning node
---------------------------
+===========================
 
 ```
               - - - - - - - - - 
@@ -63,60 +63,60 @@ Anatomy of a Lightning node
 A quick sightview, you will have to dig into docs for details.
 
 ChainWatchInterface
-===================
+-------------------
 
 A trait to request notifications of certain scripts as they appear the chain. You may combine it
 with ChainListener to dispatch block connections to other components.
 
 
 KeysInterface
-=============
+-------------
 
 A trait to get user secret and generate suitable lightning key material. Already given to
 you via KeysManager as ligthning key material is a topic in itself.
 
 ManyChannelMonitor
-==================
+------------------
 
 A trait to multiplex channel updates between different chain monitor. Or you can choose to
 implement an unichannel daemon and use direcly ChannelMonitor. Your call !
 
 PeerManager
-===========
+-----------
 
 Manager of peers, dispatch into other components. You may use net-tokio, which is an 
 integration of it based on tokio.
 
 ChannelMessageHandler
-=====================
+---------------------
 
 A trait which describes an object receiving channel message. You may directly look on
 ChannelManager, a struct implementing this trait and managing the channel logic.
 
 RoutingMessageHandler
-=====================
+---------------------
 
 A trait which can receive routing message. You may look on Router which is a basic routing implementation.
 
 
 Challenges
-----------
+==========
 
 Basics
-======
+------
 
 * have a working node
 * connect to a node
 * open a channel 
 
 Advanced
-========
+--------
 
 * send payment
 * receive payment
 
 Expert
-======
+------
 
 * handle chain reorgs and channel cancellation
 * handle revoked state broadcast and punish your peer
