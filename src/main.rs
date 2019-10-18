@@ -12,15 +12,15 @@ extern crate bitcoin;
 extern crate base64;
 extern crate bitcoin_hashes;
 extern crate tokio;
+extern crate tokio_io;
+extern crate tokio_fs;
+extern crate tokio_codec;
 
 #[macro_use]
 extern crate serde_derive;
 
 mod rpc_client;
 use rpc_client::*;
-
-mod chain_monitor;
-use chain_monitor::*;
 
 mod utils;
 use utils::*;
@@ -33,7 +33,9 @@ use lightning::ln::router;
 
 use bitcoin::network::constants;
 
+use futures::future;
 use futures::future::Future;
+use futures::Stream;
 
 use secp256k1::Secp256k1;
 use secp256k1::key::PublicKey;
@@ -41,6 +43,8 @@ use secp256k1::key::PublicKey;
 use std::env;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
+
+use std::io::Write;
 
 struct LogPrinter {}
 impl Logger for LogPrinter {
@@ -100,21 +104,24 @@ fn main() {
 	let now = SystemTime::now().duration_since(UNIX_EPOCH).expect("Time went backwards");
 	let keys = Arc::new(KeysManager::new(&seed, network, logger.clone(), now.as_secs(), now.subsec_nanos()));
 
-	// Init fee estimator
-	let fee_estimator = Arc::new(FeeEstimator::new());
+	//XXX Init ChainInterface
+
+	//XXX Init Router 
 	
-	//XXX Init chain monitor
+	//XXX Init Channel Manager
 
-	// Init router
-	
-	// Init Channel Manager
+	//XXX Init PeerManager
 
-	// Init p2p stack - one thread
-		
+	//XXX Init ManyChannelMonitor
 
-
-
-	//XXX Init channel monitoring
-
-	//TODO Launch foreground shell
+	println!("Bound on port 9735! Our node_id: {}", hex_str(&PublicKey::from_secret_key(&secp_ctx, &keys.get_node_secret()).serialize()));
+	println!("Started interactive shell! Commands:");
+	println!("'c pubkey@host:port' Connect to given host+port, with given pubkey for auth");
+	println!("'n pubkey value push_value' Create a channel with the given connected node (by pubkey), value in satoshis, and push the given msat value");
+	println!("'k channel_id' Close a channel with the given id");
+	println!("'f all' Force close all channels, closing to chain");
+	println!("'l p' List the node_ids of all connected peers");
+	println!("'l c' List details about all channels");
+	println!("'s invoice [amt]' Send payment to an invoice, optionally with amount as whole msat if its not in the invoice");
+	println!("'p' Gets a new invoice for receiving funds");
 }
