@@ -1,5 +1,6 @@
-/// Rust-Lightning daemon skeleton : Code your own lightning node in less than 2 hours* !
+/// Rust-Lightning daemon skeleton : Code your own lightning node in less than 2 hours (tm) !
 /// Open a channel with your non-trusted friends, hand them some payment and try to double-spend the channel !
+/// WARNING: The Rust-Lightning developers don't hold any responsibility in any form if you kill the whole LN testnet by mistake, misbehavior or plainly intentionally.
 
 extern crate futures;
 extern crate serde_json;
@@ -87,38 +88,33 @@ fn main() {
 
 	println!("Successfully started up on {}", match network { constants::Network::Bitcoin => "Mainet", constants::Network::Testnet => "Testnet", constants::Network::Regtest => "Regtest"});
 
-	//TODO: Add persistence to your node
+	//XXX: Bonus: add persistence to your node by setting a data directory
 	
 	// Create a logger
 	let logger = Arc::new(LogPrinter {});
 
-	//TODO: Generate key material
+	//Generate key material
 	let secp_ctx = Secp256k1::new();
 	let mut seed = [0; 32];
 	thread_rng().fill_bytes(&mut seed);
 	let now = SystemTime::now().duration_since(UNIX_EPOCH).expect("Time went backwards");
 	let keys = Arc::new(KeysManager::new(&seed, network, logger.clone(), now.as_secs(), now.subsec_nanos()));
 
-	//XXX: justice_win key + cooperative closing key
-	
 	// Init fee estimator
 	let fee_estimator = Arc::new(FeeEstimator::new());
 	
-	// Init chain monitor
-	let chain_monitor = Arc::new(ChainInterface::new(rpc_client.clone(), network, logger.clone()));
+	//XXX Init chain monitor
 
 	// Init router
-	let router = Arc::new(router::Router::new(PublicKey::from_secret_key(&secp_ctx, &keys.get_node_secret()), chain_monitor.clone(), logger.clone()));
 	
 	// Init Channel Manager
 
 	// Init p2p stack - one thread
-	//let peer_manager = 
 		
 
 
 
-	// Init Channel Monitoring
+	//XXX Init channel monitoring
 
-	// Launch foreground shell
+	//TODO Launch foreground shell
 }
